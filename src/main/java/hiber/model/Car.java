@@ -7,16 +7,15 @@ import javax.persistence.*;
 public class Car {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "model")
     private String model;
 
-    @Column(name = "series")
     private int series;
 
     @OneToOne
-    @MapsId
+    @JoinColumn(name = "user_id")
     private User user;
 
     public Car() {
@@ -49,5 +48,9 @@ public class Car {
 
     public void setSeries(int series) {
         this.series = series;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
