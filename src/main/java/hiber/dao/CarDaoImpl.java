@@ -6,7 +6,9 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
+import java.util.List;
 
 @Repository
 public class CarDaoImpl  implements CarDao{
@@ -23,7 +25,8 @@ public class CarDaoImpl  implements CarDao{
     @SuppressWarnings("unchecked")
     public User getUserByCar(Car car) {
         TypedQuery<User> query=sessionFactory.getCurrentSession().createQuery(
-                "from User where id = (id from Car where model = " + car.getModel() + " and series = " + car.getSeries() + ")", User.class);
+                "select u from User u left join u.car as c where c.model = '" + car.getModel() + "' and c.series = " + car.getSeries());
+//                "select c.user from Car c inner join c.user where c.model = " + car.getModel() + " and c.series = " + car.getSeries(), User.class);
         return query.getSingleResult();
     }
 }
